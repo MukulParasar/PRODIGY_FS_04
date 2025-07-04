@@ -18,9 +18,11 @@ export function useSocket({
   const socketRef = useRef<Socket | null>(null);
 
   useEffect(() => {
-    // Initialize socket connection
-    socketRef.current = io('http://localhost:5000', {
-      transports: ['websocket']
+    // Initialize socket connection - works for both development and production
+    const serverUrl = window.location.origin;
+    socketRef.current = io(serverUrl, {
+      transports: ['websocket', 'polling'],
+      autoConnect: true
     });
 
     const socket = socketRef.current;
